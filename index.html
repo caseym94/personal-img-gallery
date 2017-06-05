@@ -14,6 +14,7 @@
         body {
             background: black;
             overflow: hidden;
+            user-select: none;
         }
 
         nav ul {
@@ -29,7 +30,6 @@
             margin: 3px;
             font-size: 23px;
             cursor: pointer;
-            user-select: none;
         }
 
         #img-container {
@@ -122,7 +122,8 @@
         var imgContainer = document.querySelector('#img-container'),
             nav = document.querySelector('nav'),
             navYearList = document.querySelector('#year-selection'),
-            navMonthList = document.querySelector('#month-selection'),
+            monthSelectionUl = document.querySelector('#month-selection'),
+            monthLi = document.querySelectorAll('#month-selection li'),
             main = document.querySelector('main'),
             imgContainerRow = document.querySelectorAll(
                 '.img-container-row'),
@@ -1135,7 +1136,8 @@
                     august: undefined,
                     september: undefined,
                     october: undefined,
-                    november: undefined
+                    november: undefined,
+                    december: undefined
                 }
             };
         //resizes main section and the big img displayer
@@ -1193,14 +1195,16 @@
                 }
                 event.target.classList.remove('inactive');
                 selectedYear = event.target.innerHTML;
-                notAvailableFunc('_' + event.target.innerHTML.toLowerCase());
+                checkMonthsForContent('_' + event.target.innerHTML.toLowerCase());
                 //clear inactive class when switching year
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    navMonthList.children[i].classList.remove('inactive')
+                for (var i = 0; i < monthSelectionUl.children.length; i++) {
+                    monthSelectionUl.children[i].classList.remove('inactive')
                 }
             }
         });
-        navMonthList.addEventListener('click', function () {
+        monthSelectionUl.addEventListener('click', function () {
+
+            //check if clicked is an li tag, check if month is available
             if (event.target.tagName === 'LI' && !event.target.classList.contains('notAvailable')) {
                 var li = event.target.parentElement.children;
                 for (var i = 0; i < li.length; i++) {
@@ -1215,111 +1219,23 @@
             };
             img = document.querySelectorAll('main img');
         });
-
-        function notAvailableFunc(year) {
-            for (var i = 0; i < navMonthList.children.length; i++) {
-                navMonthList.children[i].classList.remove('notAvailable')
+        
+        //based on the selected year, highlight months that have available images or information
+        function checkMonthsForContent(year) {
+            //first reset all months to default by removing inactive class and adding notAvailable class 
+            for (var i = 0; i < monthSelectionUl.children.length; i++) {
+                //monthSelectionUl.children[i].classList.remove('inactive');
+                monthSelectionUl.children[i].classList.add('notAvailable');
             }
-            if (imgArr[year].january === undefined) {
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'january') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
-                }
-            }
-            if (imgArr[year].febuary === undefined) {
-
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'febuary') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
-                }
-            }
-            if (imgArr[year].march === undefined) {
-
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'march') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
-                }
-            }
-            if (imgArr[year].april === undefined) {
-
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'april') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
-                }
-            }
-            if (imgArr[year].may === undefined) {
-
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'may') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
-                }
-            }
-            if (imgArr[year].june === undefined) {
-
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'june') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
-                }
-            }
-            if (imgArr[year].july === undefined) {
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'july') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
-                }
-            }
-            if (imgArr[year].august === undefined) {
-
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'august') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
-                }
-            }
-            if (imgArr[year].september === undefined) {
-
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'september') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
-                }
-            }
-            if (imgArr[year].october === undefined) {
-
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'october') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
-                }
-            }
-            if (imgArr[year].november === undefined) {
-
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'november') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
-                }
-            }
-            if (imgArr[year].december === undefined) {
-
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'december') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
-                }
-            }
-            if (imgArr[year].all === undefined) {
-
-                for (var i = 0; i < navMonthList.children.length; i++) {
-                    if (navMonthList.children[i].innerHTML.toLowerCase() === 'all') {
-                        navMonthList.children[i].classList.add('notAvailable');
-                    }
+            //check if there is information for each month
+            //if there is information on a month find the matching li and remove the notAvailable class for it
+            for (var key in imgArr[year]) {
+                if (imgArr[year][key] !== undefined) {
+                    monthLi.forEach((li) => {
+                        if (key === li.innerHTML.toLowerCase()) {
+                            li.classList.remove('notAvailable');
+                        }
+                    });
                 }
             }
         }
