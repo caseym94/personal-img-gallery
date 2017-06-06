@@ -116,16 +116,20 @@
   }
 
   //big img displayer
-  function bigImgDisplayerFunc(state, img) {
+  function bigImgDisplayerFunc(state, imgSelected) {
+      //temp fix to prevent issue when clicking too fast
+      bigImgDisplay.style.pointerEvents = "none";
       if (state === true) {
           bigImgDisplay.style.display = 'initial';
           setTimeout(function () {
               bigImgDisplay.style.opacity = '1'
               main.style.filter = 'blur(2px)';
-              bigImgDisplay.children[0].src = img.src;
+              bigImgDisplay.children[0].src = imgSelected.src;
               var a = bigImgDisplay.offsetHeight - bigImgDisplay.children[0].offsetHeight;
               bigImgDisplay.children[0].style.marginTop = a / 2 + 'px';
               bigImgDisplayState = false;
+              //temp fix
+              bigImgDisplay.style.pointerEvents = "auto";
           }, 250);
       } else if (state === false) {
           bigImgDisplay.style.opacity = '0'
@@ -134,6 +138,8 @@
               bigImgDisplay.children[0].src = '';
               bigImgDisplay.style.display = 'none';
               bigImgDisplayState = true;
+              //temp fix
+              bigImgDisplay.style.pointerEvents = "auto";
           }, 250)
       }
   }
