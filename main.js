@@ -77,6 +77,7 @@
           }
       }
   });
+  //get images for month selected
   monthSelectionUl.addEventListener('click', function () {
 
       //check if clicked is an li tag, check if month is available
@@ -90,7 +91,11 @@
           event.target.classList.remove('inactive');
       }
       if (!event.target.classList.contains('notAvailable')) {
-          displayImgs(imgArr['_' + selectedYear][event.target.innerHTML.toLowerCase()]);
+          if (event.target.innerHTML.toLowerCase() === 'all') {
+              displayImgs(imgArr['_' + selectedYear]['all']());
+          } else {
+              displayImgs(imgArr['_' + selectedYear][event.target.innerHTML.toLowerCase()]);
+          }
       };
       img = document.querySelectorAll('main img');
   });
