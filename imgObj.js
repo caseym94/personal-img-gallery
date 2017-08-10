@@ -17,8 +17,8 @@
             this.misc = arg.misc;
             //returns all months. 
             this.all = function () {
-                let a = [];
-                for (let key in this) {
+                var a = [];
+                for (var key in this) {
                     if (this[key] && key !== 'all') {
                         a = a.concat(this[key]);
                     }
@@ -1032,7 +1032,6 @@
                 'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFc191LW9YV2FCOU0',
                 'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFV2xOaGJmb0xsWVU',
                 'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFaGNONlQ3aEhWbGM',
-                'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFc0tKR1hVckF0bG8',
                 'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFQkpfa3VRZnVRLTg',
                 'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFUXk4eTg0Q2w0VDA',
                 'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFclUtTkprRHNYdEk',
@@ -1075,7 +1074,6 @@
                 'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFNU1QVzhBVHBmNWs',
                 'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFSlBmNlROd2lBQTA',
                 'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFNUxhWW0yX29JODA',
-                'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFbkpJb2lGckF4Yms',
                 'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFTmNCYzREOVc0alU',
                 'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFOVl6SUN0c0Y1Wk0',
                 'https://drive.google.com/uc?export=view&id=0BwIlaunvEruFVjRGbEpuXzI3LU0',

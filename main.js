@@ -10,10 +10,11 @@
           '.img-container-row'),
       bigImgDisplay = document.querySelector('#bigImgDisplay'),
       img,
-      rowSwap = 0,
       bigImgDisplayState = true,
       selectedYear,
-      selectedImg;
+      selectedMonth,
+      selectedImg,
+      imgRefresher;
 
   //resizes main section and the big img displayer
   var resizeDisplay = () => {
@@ -26,13 +27,16 @@
   });
 
   function clearImgs() {
-      imgContainerRow.forEach(function (row) {
-          row.innerHTML = '';
-      });
+      for (var i = 0; i < imgContainerRow.length; i++) {
+          imgContainerRow[i].innerHTML = '';
+      }
   }
 
   function displayImgs(selectedImgs) {
+      //clear
       clearImgs();
+      //new
+      var rowSwap = 0;
       for (var i = 0; i < selectedImgs.length; i++) {
           if (rowSwap === 0) {
               var img = imgContainerRow[rowSwap].appendChild(
@@ -62,15 +66,16 @@
       }
       rowSwap = 0;
   }
-  yearSelectionUl.addEventListener('click', function () {
-      if (event.target.tagName === 'LI') {
-          var a = event.target.parentElement.children;
+  yearSelectionUl.addEventListener('click', (event) => {
+      var e = event.target || event;
+      if (e.tagName === 'LI') {
+          var a = e.parentElement.children;
           for (var i = 0; i < a.length; i++) {
               a[i].classList.add('inactive');
           }
-          event.target.classList.remove('inactive');
-          selectedYear = event.target.innerHTML;
-          checkMonthsForContent('_' + event.target.innerHTML.toLowerCase());
+          e.classList.remove('inactive');
+          selectedYear = e.innerHTML;
+          checkMonthsForContent('_' + e.innerHTML.toLowerCase());
           //clear inactive class when switching year
           for (var i = 0; i < monthSelectionUl.children.length; i++) {
               monthSelectionUl.children[i].classList.remove('inactive')
@@ -78,25 +83,37 @@
       }
   });
   //get images for month selected
-  monthSelectionUl.addEventListener('click', function () {
-
+  monthSelectionUl.addEventListener('click', (event) => {
+      var e = event.target || event;
+      selectedMonth = e.innerHTML.toLowerCase();
       //check if clicked is an li tag, check if month is available
-      if (event.target.tagName === 'LI' && !event.target.classList.contains('notAvailable')) {
-          var li = event.target.parentElement.children;
+      if (e.tagName === 'LI' && !e.classList.contains('notAvailable')) {
+          var li = e.parentElement.children;
           for (var i = 0; i < li.length; i++) {
               if (!li[i].classList.contains('notAvailable')) {
                   li[i].classList.add('inactive');
               }
           }
-          event.target.classList.remove('inactive');
+          e.classList.remove('inactive');
       }
-      if (!event.target.classList.contains('notAvailable')) {
-          if (event.target.innerHTML.toLowerCase() === 'all') {
-              displayImgs(imgArr['_' + selectedYear]['all']());
-          } else {
-              displayImgs(imgArr['_' + selectedYear][event.target.innerHTML.toLowerCase()]);
+      //if there's information display images
+      if (!e.classList.contains('notAvailable')) {
+          //clear previous 
+          clearInterval(imgRefresher);
+          //use an named function so I don't have to wait for 6 sec on interval to display imgs
+          function a() {
+              console.log('ayyy');
+              if (selectedMonth === 'all') {
+                  displayImgs(imgArr['_' + selectedYear]['all']());
+              } else {
+                  displayImgs(imgArr['_' + selectedYear][selectedMonth]);
+              }
           }
+          a();
+          //constantly loads images because sometimes they bug out/don't load
+          imgRefresher = setInterval(a, 6000);
       };
+      //store selected images into image tag
       img = document.querySelectorAll('main img');
   });
 
@@ -126,7 +143,7 @@
       bigImgDisplay.style.pointerEvents = "none";
       if (state === true) {
           bigImgDisplay.style.display = 'initial';
-          setTimeout(function () {
+          setTimeout(() => {
               bigImgDisplay.style.opacity = '1'
               main.style.filter = 'blur(2px)';
               bigImgDisplay.children[0].src = imgSelected.src;
@@ -139,7 +156,7 @@
       } else if (state === false) {
           bigImgDisplay.style.opacity = '0'
           main.style.filter = 'blur(0)';
-          setTimeout(function () {
+          setTimeout(() => {
               bigImgDisplay.children[0].src = '';
               bigImgDisplay.style.display = 'none';
               bigImgDisplayState = true;
@@ -148,27 +165,30 @@
           }, 250)
       }
   }
-  main.addEventListener('click', function () {
+  main.addEventListener('click', (event) => {
+      var e = event.target || event;
       if (event.target.tagName === 'IMG') {
-          bigImgDisplayerFunc(bigImgDisplayState, event.target);
-          setTimeout(function () {
+          bigImgDisplayerFunc(bigImgDisplayState, e);
+          setTimeout(() => {
               selectededImgFunc();
           }, 250);
       }
   });
-  bigImgDisplay.addEventListener('click', function () {
+  bigImgDisplay.addEventListener('click', () => {
       bigImgDisplayerFunc(false);
       selectedImg = '';
   });
-
+  //keeps track of selected image
   function selectededImgFunc() {
-      img.forEach(function (img) {
+      img.forEach((img) => {
           if (img.src === bigImgDisplay.children[0].src) {
               selectedImg = img;
           }
       });
   }
 
+
+  //work in progress
   function imgNext() {
       bigImgDisplay.children[0].src = selectedImg.nextElementSibling.src;
       selectededImgFunc();
